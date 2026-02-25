@@ -2,14 +2,14 @@ import Link from "next/link";
 
 export function BuiltFor() {
   return (
-    <section className="py-24 bg-white border-t border-border-light">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+    <section className="py-16 sm:py-24 bg-white border-t border-border-light">
+      <div className="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 gap-4 sm:gap-6">
           <div className="max-w-2xl">
-            <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
               Built For Transparency
             </h2>
-            <p className="mt-4 text-lg text-slate-500">
+            <p className="mt-3 sm:mt-4 text-base sm:text-lg text-slate-500">
               Empowering those who demand accountability with precision data.
             </p>
           </div>
@@ -22,9 +22,9 @@ export function BuiltFor() {
             </Link>
           </div>
         </div>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {/* Card 1 */}
-          <div className="group rounded-2xl border border-slate-200 bg-white p-6 transition-all hover:border-slate-300 hover:shadow-lg hover:shadow-slate-100">
+          <div className="group rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 transition-all hover:border-slate-300 hover:shadow-lg hover:shadow-slate-100">
             <div className="mb-4 inline-flex items-center justify-center rounded-lg bg-slate-50 p-2 text-slate-700 group-hover:bg-slate-100">
               <span className="material-symbols-outlined">newspaper</span>
             </div>
@@ -37,7 +37,7 @@ export function BuiltFor() {
             </p>
           </div>
           {/* Card 2 */}
-          <div className="group rounded-2xl border border-slate-200 bg-white p-6 transition-all hover:border-slate-300 hover:shadow-lg hover:shadow-slate-100">
+          <div className="group rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 transition-all hover:border-slate-300 hover:shadow-lg hover:shadow-slate-100">
             <div className="mb-4 inline-flex items-center justify-center rounded-lg bg-slate-50 p-2 text-slate-700 group-hover:bg-slate-100">
               <span className="material-symbols-outlined">science</span>
             </div>
@@ -50,7 +50,7 @@ export function BuiltFor() {
             </p>
           </div>
           {/* Card 3 */}
-          <div className="group rounded-2xl border border-slate-200 bg-white p-6 transition-all hover:border-slate-300 hover:shadow-lg hover:shadow-slate-100">
+          <div className="group rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 transition-all hover:border-slate-300 hover:shadow-lg hover:shadow-slate-100">
             <div className="mb-4 inline-flex items-center justify-center rounded-lg bg-slate-50 p-2 text-slate-700 group-hover:bg-slate-100">
               <span className="material-symbols-outlined">gavel</span>
             </div>
@@ -63,7 +63,7 @@ export function BuiltFor() {
             </p>
           </div>
           {/* Card 4 */}
-          <div className="group rounded-2xl border border-slate-200 bg-white p-6 transition-all hover:border-slate-300 hover:shadow-lg hover:shadow-slate-100">
+          <div className="group rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 transition-all hover:border-slate-300 hover:shadow-lg hover:shadow-slate-100">
             <div className="mb-4 inline-flex items-center justify-center rounded-lg bg-slate-50 p-2 text-slate-700 group-hover:bg-slate-100">
               <span className="material-symbols-outlined">groups</span>
             </div>

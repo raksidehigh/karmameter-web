@@ -5,9 +5,6 @@ export function MethodologyContent() {
         id="introduction"
         className="max-w-3xl border-b border-slate-200 pb-10"
       >
-        <div className="inline-flex items-center rounded-full border border-slate-200 bg-white px-2.5 py-0.5 text-xs font-medium text-slate-600 mb-6 shadow-sm">
-          v2.4 Updated Oct 2023
-        </div>
         <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl mb-6">
           Our Methodology
         </h1>

@@ -1,17 +1,17 @@
 export function Hero() {
   return (
-    <section className="relative pt-32 pb-20 sm:pt-40 sm:pb-24">
+    <section className="relative pt-24 pb-16 sm:pt-32 sm:pb-20 md:pt-40 md:pb-24">
       {/* Background Grid */}
       <div className="absolute inset-0 -z-10 h-[800px] w-full bg-grid-pattern opacity-[0.4] grid-bg pointer-events-none" />
-      <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-        <h1 className="mx-auto max-w-4xl text-5xl font-extrabold tracking-tight text-slate-900 sm:text-6xl md:text-7xl">
+      <div className="mx-auto max-w-7xl px-6 text-center sm:px-6 lg:px-8">
+        <h1 className="mx-auto max-w-4xl text-3xl font-extrabold tracking-tight text-slate-900 sm:text-5xl md:text-6xl lg:text-7xl leading-tight">
           Public Accountability,
-          <br className="hidden sm:block" />
+          <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-500">
             Quantified.
           </span>
         </h1>
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-500 sm:text-xl leading-relaxed">
+        <p className="mx-auto mt-4 sm:mt-6 max-w-2xl text-base sm:text-lg md:text-xl text-slate-500 leading-relaxed px-4">
           Karmameter aggregates publicly available data on public officials,
           budgets, and government projects — transforming fragmented records
           into structured, transparent insights.
