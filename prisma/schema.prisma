@@ -11,74 +11,132 @@ datasource db {
 // ─── Admin ────────────────────────────────────────────────────────────────────
 
 model AdminUser {
-  id            String   @id @default(cuid())
-  email         String   @unique
-  passwordHash  String
-  totpSecret    String?  // null until TOTP is set up
-  totpVerified  Boolean  @default(false)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  totpSecret   String?
+  totpVerified Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   @@map("admin_users")
 }
 
-// ─── Core Entities ────────────────────────────────────────────────────────────
+// ─── Geography ────────────────────────────────────────────────────────────────
 
-model Party {
-  id           String      @id @default(cuid())
-  name         String      @unique
-  abbreviation String
-  symbolUrl    String?
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
+model Country {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  code      String   @unique // ISO 3166-1 alpha-2, e.g. "IN", "US"
+  flagUrl   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  politicians  Politician[]
+  states         State[]
+  parties        Party[]
+  electionTypes  ElectionType[]
 
-  @@map("parties")
+  @@map("countries")
 }
 
+model State {
+  id        String   @id @default(cuid())
+  name      String
+  code      String?  // e.g. "MH", "CA"
+  countryId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  country        Country        @relation(fields: [countryId], references: [id])
+  constituencies Constituency[]
+
+  @@unique([name, countryId])
+  @@map("states")
+}
+
+// ─── Election Types ───────────────────────────────────────────────────────────
+
+model ElectionType {
+  id          String         @id @default(cuid())
+  name        String         // "Lok Sabha", "Vidhan Sabha", "MCD", "Congressional"
+  level       ElectionLevel  // NATIONAL, STATE, LOCAL
+  countryId   String
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  country        Country        @relation(fields: [countryId], references: [id])
+  constituencies Constituency[]
+
+  @@unique([name, countryId])
+  @@map("election_types")
+}
+
+// ─── Constituencies ───────────────────────────────────────────────────────────
+
 model Constituency {
-  id         String             @id @default(cuid())
-  name       String
-  state      String             // e.g. "Goa", "Punjab"
-  type       ConstituencyType
-  population BigInt?
-  createdAt  DateTime           @default(now())
-  updatedAt  DateTime           @updatedAt
+  id             String   @id @default(cuid())
+  name           String
+  stateId        String
+  electionTypeId String
+  population     BigInt?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  state        State        @relation(fields: [stateId], references: [id])
+  electionType ElectionType @relation(fields: [electionTypeId], references: [id])
 
   politicians Politician[]
   budgets     Budget[]
   projects    Project[]
 
-  @@unique([name, state, type])
+  @@unique([name, stateId, electionTypeId])
   @@map("constituencies")
 }
 
+// ─── Parties ──────────────────────────────────────────────────────────────────
+
+model Party {
+  id           String   @id @default(cuid())
+  name         String
+  abbreviation String
+  countryId    String
+  symbolUrl    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  country     Country      @relation(fields: [countryId], references: [id])
+  politicians Politician[]
+
+  @@unique([name, countryId])
+  @@map("parties")
+}
+
+// ─── Politicians ──────────────────────────────────────────────────────────────
+
 model Politician {
-  id             String       @id @default(cuid())
+  id             String   @id @default(cuid())
   fullName       String
   dateOfBirth    DateTime?
   partyId        String?
   constituencyId String?
-  position       String       // "MP", "MLA", "Minister", etc.
+  position       String   // "MP", "MLA", "Councillor", "Senator" etc.
   electionYear   Int?
   totalAssets    Decimal?
-  criminalCases  Int          @default(0)
+  criminalCases  Int      @default(0)
   education      String?
-  photoUrl       String?
-  sourceUrl      String?      // affidavit / ECI source
-  isActive       Boolean      @default(true)
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  photoUrl       String?  // Supabase Storage URL
+  sourceUrl      String?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   party        Party?        @relation(fields: [partyId], references: [id])
   constituency Constituency? @relation(fields: [constituencyId], references: [id])
 
-  projects    Project[]
-  promises    Promise[]
-  attendance  Attendance[]
-  scores      Score[]
-  auditLogs   AuditLog[]
+  projects   Project[]
+  promises   Promise[]
+  attendance Attendance[]
+  scores     Score[]
 
   @@map("politicians")
 }
@@ -86,14 +144,14 @@ model Politician {
 // ─── Data Models ──────────────────────────────────────────────────────────────
 
 model Budget {
-  id             String   @id @default(cuid())
-  constituencyId String
-  financialYear  String   // e.g. "2023-24"
+  id              String   @id @default(cuid())
+  constituencyId  String
+  financialYear   String
   allocatedAmount Decimal
-  spentAmount    Decimal?
-  sourceUrl      String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  spentAmount     Decimal?
+  sourceUrl       String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   constituency Constituency @relation(fields: [constituencyId], references: [id])
 
@@ -122,14 +180,14 @@ model Project {
 }
 
 model Promise {
-  id          String        @id @default(cuid())
+  id           String        @id @default(cuid())
   politicianId String
-  description String
-  category    String?
-  status      PromiseStatus @default(NOT_STARTED)
-  evidenceUrl String?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  description  String
+  category     String?
+  status       PromiseStatus @default(NOT_STARTED)
+  evidenceUrl  String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 
   politician Politician @relation(fields: [politicianId], references: [id])
 
@@ -150,7 +208,7 @@ model Attendance {
   @@map("attendance_records")
 }
 
-// ─── Scores (computed, not raw) ───────────────────────────────────────────────
+// ─── Scores ───────────────────────────────────────────────────────────────────
 
 model Score {
   id              String   @id @default(cuid())
@@ -172,25 +230,24 @@ model Score {
 // ─── Audit Log ────────────────────────────────────────────────────────────────
 
 model AuditLog {
-  id          String   @id @default(cuid())
-  entityType  String   // "Politician", "Score", etc.
-  entityId    String
-  action      AuditAction
-  changedBy   String   // admin email
-  oldData     Json?
-  newData     Json?
-  timestamp   DateTime @default(now())
-
-  politician  Politician? @relation(fields: [entityId], references: [id], map: "audit_politician_fk")
+  id         String      @id @default(cuid())
+  entityType String
+  entityId   String
+  action     AuditAction
+  changedBy  String
+  oldData    Json?
+  newData    Json?
+  timestamp  DateTime    @default(now())
 
   @@map("audit_logs")
 }
 
 // ─── Enums ────────────────────────────────────────────────────────────────────
 
-enum ConstituencyType {
-  LOK_SABHA
-  VIDHAN_SABHA
+enum ElectionLevel {
+  NATIONAL
+  STATE
+  LOCAL
 }
 
 enum ProjectStatus {
