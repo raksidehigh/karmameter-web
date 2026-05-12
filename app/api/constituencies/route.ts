@@ -3,18 +3,22 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
-  const state = searchParams.get("state");
-  const type = searchParams.get("type") as "LOK_SABHA" | "VIDHAN_SABHA" | null;
+  const stateId = searchParams.get("stateId");
+  const electionTypeId = searchParams.get("electionTypeId");
+  const countryId = searchParams.get("countryId");
 
   const constituencies = await prisma.constituency.findMany({
     where: {
-      ...(state && { state }),
-      ...(type && { type }),
+      ...(stateId && { stateId }),
+      ...(electionTypeId && { electionTypeId }),
+      ...(countryId && { state: { countryId } }),
     },
     include: {
-      _count: { select: { politicians: true, projects: true } },
+      state: { select: { name: true, country: { select: { name: true, code: true } } } },
+      electionType: { select: { name: true, level: true } },
+      _count: { select: { politicians: true } },
     },
-    orderBy: [{ state: "asc" }, { name: "asc" }],
+    orderBy: [{ state: { name: "asc" } }, { name: "asc" }],
   });
 
   return NextResponse.json(constituencies);

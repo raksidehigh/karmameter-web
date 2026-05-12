@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { clearSessionCookie } from "@/lib/session";
 
-export async function POST() {
-  const res = NextResponse.json({ ok: true });
+export async function POST(req: NextRequest) {
+  const res = NextResponse.redirect(new URL("/admin/login", req.url), { status: 302 });
   res.cookies.set(clearSessionCookie());
   return res;
 }

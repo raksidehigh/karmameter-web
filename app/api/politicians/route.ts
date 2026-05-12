@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
-  const state = searchParams.get("state");
+  const stateId = searchParams.get("stateId");
   const constituencyId = searchParams.get("constituencyId");
   const partyId = searchParams.get("partyId");
   const q = searchParams.get("q");
@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
 
   const where = {
     isActive: true,
-    ...(state && { constituency: { state } }),
+    ...(stateId && { constituency: { stateId } }),
     ...(constituencyId && { constituencyId }),
     ...(partyId && { partyId }),
     ...(q && { fullName: { contains: q, mode: "insensitive" as const } }),
@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
       where,
       include: {
         party: { select: { id: true, name: true, abbreviation: true } },
-        constituency: { select: { id: true, name: true, state: true, type: true } },
+        constituency: { select: { id: true, name: true, state: { select: { name: true } }, electionType: { select: { name: true } } } },
         scores: { orderBy: { lastComputedAt: "desc" }, take: 1 },
       },
       orderBy: { fullName: "asc" },
