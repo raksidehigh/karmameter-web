@@ -1,0 +1,12 @@
+# ads.txt for karmameter-web
+# Replace the publisher IDs with your actual IDs provided by each ad network.
+# Format: <ad-system-domain>, <publisher-id>, <DIRECT|RESELLER>, <cert-authority-id (optional)>
+
+# Google AdSense / Ad Manager example (replace pub-REPLACE_WITH_PUBID):
+google.com, pub-9144136999464322, DIRECT, f08c47fec0942fa0
+
+# Example entries for other networks (replace IDs and relationship as instructed):
+# appnexus.com, REPLACE_WITH_SELLER_ID, RESELLER
+# openx.com, REPLACE_WITH_SELLER_ID, DIRECT
+
+# When ready, deploy and verify: https://your-domain/ads.txt
