@@ -81,19 +81,33 @@ const marqueeItems = [
 
 const sources = [
   {
-    outlet: "Al Jazeera",
-    title: "Why have India's Gen Z protesters called for a march to parliament?",
-    href: "https://www.aljazeera.com/features/2026/7/19/why-have-indias-gen-z-protesters-called-for-a-march-to-parliament",
+    outlet: "ANI",
+    title:
+      "Delhi Police begin removing protesters at Jantar Mantar after Sonam Wangchuk taken to hospital",
+    href: "https://www.aninews.in/news/national/politics/delhi-police-begins-removing-protestors-at-jantar-mantar-after-sonam-wangchuk-taken-to-hospital20260718083130/",
   },
   {
-    outlet: "Al Jazeera",
-    title: "Police attack Cockroach activists as thousands march on parliament",
-    href: "https://www.aljazeera.com/news/2026/7/20/police-attack-cockroach-activists-as-thousands-march-on-indian-parliament",
+    outlet: "ANI",
+    title:
+      "After court-directed hospital transfer, Wangchuk continues fast amid ongoing protests",
+    href: "https://www.aninews.in/news/national/politics/after-court-directed-hospital-transfer-wangchuk-continues-fast-amid-ongoing-protests20260721231942/",
   },
   {
-    outlet: "NPR",
-    title: "India's youth-led Cockroach movement vows to continue after crackdown",
-    href: "https://www.npr.org/2026/07/21/g-s1-134722/indias-youth-led-cockroach-movement-vows-to-continue-protest-after-police-crackdown",
+    outlet: "The Week",
+    title:
+      "Delhi Police lathi-charge CJP protesters as thousands join Parliament march",
+    href: "https://www.theweek.in/news/india/2026/07/20/cjp-neet-protest-jantar-mantar-parliament-march.html",
+  },
+  {
+    outlet: "Deccan Herald",
+    title: "Delhi Police forcibly remove Sonam Wangchuk from Jantar Mantar",
+    href: "https://www.deccanherald.com/india/delhi/delhi-police-forcibly-remove-sonam-wangchuk-from-jantar-mantar-4078496",
+  },
+  {
+    outlet: "Careers360",
+    title:
+      "NEET UG row: students detained while attempting to march towards Parliament",
+    href: "https://news.careers360.com/neet-ug-row-over-dozen-students-detained-while-attempting-march-towards-parliament",
   },
   {
     outlet: "Wikipedia",
