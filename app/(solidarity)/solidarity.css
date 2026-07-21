@@ -1,0 +1,121 @@
+/* Solidarity ("Wall of Demands") page — bespoke styles ported from the approved design. */
+
+/* Font family helpers (families supplied via next/font CSS variables). */
+.font-display {
+  font-family: var(--font-bebas), "Bebas Neue", system-ui, sans-serif;
+}
+.font-body {
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+}
+
+/* Placards — kraft-paper protest signs. */
+.placard {
+  background-color: #ece7dd;
+  color: #0f172a;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.placard:hover {
+  transform: scale(1.05) rotate(0deg) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+  z-index: 20;
+}
+
+/* Faux adhesive tape corners. */
+.tape-corner-tl,
+.tape-corner-tr {
+  position: absolute;
+  top: -15px;
+  width: 60px;
+  height: 20px;
+  background-color: rgba(203, 213, 225, 0.8);
+  z-index: 10;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+.tape-corner-tl {
+  left: -15px;
+  transform: rotate(-45deg);
+}
+.tape-corner-tr {
+  right: -15px;
+  transform: rotate(45deg);
+}
+
+/* Live pulse indicator. */
+@keyframes pulse-red {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(220, 38, 38, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+  }
+}
+.live-dot {
+  animation: pulse-red 2s infinite;
+  background-color: #dc2626;
+}
+
+/* Scroll-reveal (activated by the client IntersectionObserver). */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hero image slow zoom + gradient overlay. */
+@keyframes slow-zoom {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+.animate-slow-zoom {
+  animation: slow-zoom 20s ease-out infinite alternate;
+}
+.hero-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 23, 42, 0.3) 0%,
+    rgba(15, 23, 42, 0.92) 100%
+  );
+}
+
+/* Hashtag marquee ticker. */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}
+
+/* Respect reduced-motion preferences. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+  .animate-slow-zoom,
+  .animate-marquee,
+  .live-dot {
+    animation: none;
+  }
+}
