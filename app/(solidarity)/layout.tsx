@@ -16,16 +16,37 @@ const bebas = Bebas_Neue({
   subsets: ["latin"],
 });
 
+const BASE_URL = "https://www.karmameter.in";
+
 export const metadata: Metadata = {
   title: "We Stand With India's Youth — Karmameter.in",
   description:
     "A living protest wall in solidarity with India's youth-led movement for accountability — over exam-paper leaks, the treatment of Sonam Wangchuk, and the right to protest peacefully. An independent citizen page.",
+  alternates: {
+    canonical: BASE_URL,
+  },
   openGraph: {
     title: "We Stand With India's Youth — Karmameter.in",
     description:
       "Solidarity with the students, aspirants, and citizens demanding accountability. The demands, the facts, and verified sources.",
+    url: BASE_URL,
     type: "website",
     locale: "en_IN",
+    images: [
+      {
+        url: `${BASE_URL}/protest/hero.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "We Stand With India's Youth — Karmameter.in",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "We Stand With India's Youth — Karmameter.in",
+    description:
+      "Solidarity with the students, aspirants, and citizens demanding accountability. The demands, the facts, and verified sources.",
+    images: [`${BASE_URL}/protest/hero.jpg`],
   },
   robots: { index: true, follow: true },
 };
