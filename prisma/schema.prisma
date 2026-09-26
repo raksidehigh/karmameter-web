@@ -242,6 +242,62 @@ model AuditLog {
   @@map("audit_logs")
 }
 
+// ─── Document Metadata (INT-1) ────────────────────────────────────────────────
+
+model Portal {
+  id            String    @id @default(cuid())
+  name          String    @unique
+  baseUrl       String
+  type          String?
+  isActive      Boolean   @default(true)
+  lastScrapedAt DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  records       Record[]
+  ingestionLogs IngestionLog[]
+
+  @@map("portals")
+}
+
+model Record {
+  id          String   @id @default(cuid())
+  portalId    String
+  title       String
+  documentUrl String?
+  fileHash    String?
+  status      String   @default("FETCHED")
+  fetchedAt   DateTime @default(now())
+  rawData     Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  portal Portal @relation(fields: [portalId], references: [id])
+
+  @@index([portalId])
+  @@index([fileHash])
+  @@map("records")
+}
+
+model IngestionLog {
+  id              String    @id @default(cuid())
+  portalId        String?
+  startedAt       DateTime  @default(now())
+  finishedAt      DateTime?
+  status          String
+  recordsFetched  Int       @default(0)
+  recordsInserted Int       @default(0)
+  errorMessage    String?
+  triggeredBy     String?
+  createdAt       DateTime  @default(now())
+
+  portal Portal? @relation(fields: [portalId], references: [id])
+
+  @@index([portalId, startedAt])
+  @@map("ingestion_logs")
+}
+
+
 // ─── Enums ────────────────────────────────────────────────────────────────────
 
 enum ElectionLevel {
