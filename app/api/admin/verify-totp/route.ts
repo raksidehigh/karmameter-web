@@ -3,6 +3,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { getSession, signSession, sessionCookieOptions } from "@/lib/session";
 import { verifyTotpToken } from "@/lib/totp";
+import { isLocked, recordFailure, resetFailures, LOCKED_MESSAGE } from "@/lib/lockout";
 
 const schema = z.object({ token: z.string().length(6) });
 
@@ -19,9 +20,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "TOTP not configured" }, { status: 400 });
   }
 
+  if (isLocked(admin)) {
+    return NextResponse.json({ error: LOCKED_MESSAGE }, { status: 429 });
+  }
+
   if (!verifyTotpToken(parsed.data.token, admin.totpSecret)) {
+    await recordFailure(admin.id);
     return NextResponse.json({ error: "Invalid TOTP code" }, { status: 401 });
   }
+
+  // Password and TOTP both passed — clear the failure counter
+  await resetFailures(admin.id);
 
   const newToken = await signSession({ adminId: admin.id, email: admin.email, totpVerified: true });
   const res = NextResponse.json({ ok: true });

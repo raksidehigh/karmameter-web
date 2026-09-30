@@ -3,6 +3,7 @@ import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { signSession, sessionCookieOptions } from "@/lib/session";
+import { isLocked, recordFailure, LOCKED_MESSAGE } from "@/lib/lockout";
 
 const schema = z.object({
   email: z.string().email(),
@@ -19,7 +20,12 @@ export async function POST(req: NextRequest) {
   const { email, password } = parsed.data;
   const admin = await prisma.adminUser.findUnique({ where: { email } });
 
+  if (admin && isLocked(admin)) {
+    return NextResponse.json({ error: LOCKED_MESSAGE }, { status: 429 });
+  }
+
   if (!admin || !(await bcrypt.compare(password, admin.passwordHash))) {
+    if (admin) await recordFailure(admin.id);
     return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
   }
 

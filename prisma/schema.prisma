@@ -11,13 +11,16 @@ datasource db {
 // ─── Admin ────────────────────────────────────────────────────────────────────
 
 model AdminUser {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  passwordHash String
-  totpSecret   String?
-  totpVerified Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id             String    @id @default(cuid())
+  email          String    @unique
+  passwordHash   String
+  totpSecret     String?
+  totpVerified   Boolean   @default(false)
+  // Brute-force lockout: consecutive failed password/TOTP attempts
+  failedAttempts Int       @default(0)
+  lockedUntil    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
   @@map("admin_users")
 }
