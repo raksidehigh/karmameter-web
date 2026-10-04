@@ -32,7 +32,7 @@ export default async function RecordDetailView({ id } : CompProps) {
       >{recordData?.summary}</p>
       <Link
         className="text-sm font-semibold text-primary hover:text-slate-800"
-        href={`${recordData.portal}`}  
+        href={`${recordData.source_url}`}  
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Record Link"
