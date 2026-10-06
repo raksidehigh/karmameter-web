@@ -4,6 +4,7 @@ export type RecordResult = {
   summary: string;
   publishedAt: string;
   portal: string;
+  source_url: string;
 };
 
 // Temporary fake data. Remove when the real API is ready.
@@ -14,6 +15,7 @@ export const MOCK_RECORDS: RecordResult[] = [
     summary: "Contract awarded for resurfacing of main roads in the central ward.",
     publishedAt: "2026-08-12",
     portal: "portal-1",
+    source_url : "https://gov.website1.com/",
   },
   {
     id: "2",
@@ -21,6 +23,7 @@ export const MOCK_RECORDS: RecordResult[] = [
     summary: "Summary of funds allocated and spent across departments.",
     publishedAt: "2026-06-30",
     portal: "portal-2",
+    source_url : "https://gov.website2.com/",
   },
   {
     id: "3",
@@ -28,5 +31,6 @@ export const MOCK_RECORDS: RecordResult[] = [
     summary: "Minutes of the monthly council meeting, including attendance.",
     publishedAt: "2026-07-18",
     portal: "portal-1",
+    source_url : "https://gov.website3.com/",
   },
 ];
