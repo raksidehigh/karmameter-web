@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { RecordResult } from "@/lib/mockRecords";
+import type { RecordResult } from "@/lib/records";
 
 export function SearchForm() {
   const [query, setQuery] = useState("");

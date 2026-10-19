@@ -1,16 +1,12 @@
 import { NextResponse } from "next/server";
-import { RecordResult, MOCK_RECORDS } from "@/lib/mockRecords";
+import { getRecord } from "@/lib/records";
 
-export async function GET(request: Request, { params } : {params: Promise<{id : string}>}) {
-    const { id } = await params;
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
 
-    const records : RecordResult[] = MOCK_RECORDS.filter((record : RecordResult) => record.id == id);
-    if (records.length === 0){
-        return NextResponse.json({message : "Record Not Found"}, {status : 404});
-    }else{
-        return NextResponse.json({
-            message: "Record found",
-            record: records[0]
-        }, {status : 200});
-    }
+  const record = await getRecord(id);
+  if (!record) {
+    return NextResponse.json({ message: "Record Not Found" }, { status: 404 });
+  }
+  return NextResponse.json({ message: "Record found", record }, { status: 200 });
 }

@@ -605,6 +605,15 @@ npm run dev
 
 Then open `http://localhost:3000` in your browser.
 
+To see records on `/search`, point the app at a local Postgres and load the demo seed data:
+
+```bash
+docker run -d --name karmameter-pg -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=karmameter -p 5432:5432 postgres:16-alpine
+cp .env.example .env    # Prisma CLI reads .env; Next.js also reads it
+npx prisma migrate deploy
+npm run db:seed         # re-runnable; inserts demo portals and records (example.in URLs)
+```
+
 The main entry points are:
 
 - `app/page.tsx` – marketing / landing page  
