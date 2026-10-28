@@ -1,16 +1,42 @@
-import { NextResponse } from "next/server";
-import { RecordResult, MOCK_RECORDS } from "@/lib/mockRecords";
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { serializeRecord } from "@/lib/serializers/record";
 
-export async function GET(request: Request, { params } : {params: Promise<{id : string}>}) {
-    const { id } = await params;
+export async function GET(
+  _req: NextRequest | Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
 
-    const records : RecordResult[] = MOCK_RECORDS.filter((record : RecordResult) => record.id == id);
-    if (records.length === 0){
-        return NextResponse.json({message : "Record Not Found"}, {status : 404});
-    }else{
-        return NextResponse.json({
-            message: "Record found",
-            record: records[0]
-        }, {status : 200});
-    }
+  if (!id || typeof id !== "string") {
+    return NextResponse.json({ message: "Record Not Found", error: "Record ID is required" }, { status: 400 });
+  }
+
+  const record = await prisma.record.findUnique({
+    where: { id },
+    include: {
+      portal: {
+        select: {
+          id: true,
+          name: true,
+          baseUrl: true,
+          type: true,
+          isActive: true,
+          lastScrapedAt: true,
+        },
+      },
+    },
+  });
+
+  if (!record) {
+    return NextResponse.json({ message: "Record Not Found", error: "Record not found" }, { status: 404 });
+  }
+
+  const serialized = serializeRecord(record);
+
+  return NextResponse.json({
+    message: "Record found",
+    record: serialized,
+    ...serialized,
+  });
 }
